@@ -2,15 +2,28 @@ const mongoose = require('mongoose')
 const Company = mongoose.model('Company');
 
 module.exports = async function allStocks( req, res ){
-    let { page = 1, limit = 5} = req.query;
-
+    let { page = 1, limit = 5, filter = ''} = req.query;
     page = Math.ceil(page)
+    let filterMongo = ''
+
+    if(filter=='maxPrice'){
+        filterMongo = { currentPrice: -1 }
+    }
+
+    if(filter=='minPrice'){
+        filterMongo = { currentPrice: 1 }
+    }
+
+    // if(filter=='maxProfit'){
+    //     filterMongo = { 'historicalPrice.adjClose': 'desc' }
+    // }
 
     try {
         const allCompany = await Company.find()
-        .limit(limit * 1)
-        .skip((page - 1) * limit)
-        .exec();
+            .sort(filterMongo)
+            .limit(limit * 1)
+            .skip((page - 1) * limit)
+            .exec();
 
 
         if(allCompany.length == 0){
@@ -25,8 +38,8 @@ module.exports = async function allStocks( req, res ){
             res.description = allCompany.description
             res.ticker = allCompany.ticker
             res.avatar = allCompany.avatar
-            res.recommendationPrice = allCompany.historicalPrice[allCompany.historicalPrice.length - 1].adjClose
-            res.currentPrice = allCompany.historicalPrice[allCompany.historicalPrice.length - 1].adjTargetPrice
+            res.recommendationPrice = allCompany.recommendationPrice
+            res.currentPrice = allCompany.currentPrice
             
             return res
         })
@@ -36,10 +49,11 @@ module.exports = async function allStocks( req, res ){
         res.json({
             company,
             totalPages: Math.ceil(count / limit),
-            currentPage: Number(page)
+            currentPage: Number(page),
         });
         
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             error: `Error: ${err.message}`,
         })

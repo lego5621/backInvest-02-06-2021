@@ -20,19 +20,19 @@ module.exports = async function login (req, res, next){
       });
     }
   
-    return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
-      if(err) {
-        return next(err);
-      }
+  return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+    if(err) {
+      return next(err);
+    }
 
-  
-      if(passportUser) {
-        const user = passportUser;
-        user.token = passportUser.generateJWT();
-  
-        return res.json({ user: user.toAuthJSON() });
-      }
-      
-      return res.status(400).send(info);
-    })(req, res, next);
+
+    if(passportUser) {
+      const user = passportUser;
+      user.token = passportUser.generateJWT();
+
+      return res.json({ user: user.toAuthJSON() });
+    }
+    
+    return res.status(400).send(info);
+  })(req, res, next);
 };

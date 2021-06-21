@@ -11,6 +11,6 @@ module.exports = async function getUser (req, res, next){
                 return res.sendStatus(400);
             }
     
-        return res.json({ id: user.id });
+        return res.json({ id: user.id, firstname: user.firstname, lastname: user.lastname });
     });
 }

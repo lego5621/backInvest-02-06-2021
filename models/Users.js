@@ -28,8 +28,9 @@ UsersSchema.methods.generateJWT = function() {
   expirationDate.setDate(today.getDate() + 60);
 
   return jwt.sign({
-    // email: this.email,
-    id: this._id,
+    email: this.email,
+    firstname: this.firstname,
+    lastname: this.lastname,
     exp: parseInt(expirationDate.getTime() / 1000, 10),
   }, 'secret');
 }

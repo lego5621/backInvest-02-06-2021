@@ -9,15 +9,14 @@ const getSingleCompany = require('../../controllers/getSingleCompany');
 
 
 
+
+
 router.post('/regist', auth.optional, registration);
 
 router.post('/login', auth.optional, login);
 
-// router.get('/id', auth.required, getUser);
+router.get('/company', auth.required, getAllCompany);
 
-router.get('/company', auth.optional, getAllCompany);
-
-// router.get('/company/:query', auth.required, getSingleCompany);
- router.get('/company/:query', auth.optional, getSingleCompany);
+router.get('/company/:query', auth.required, getSingleCompany);
 
 module.exports = router;

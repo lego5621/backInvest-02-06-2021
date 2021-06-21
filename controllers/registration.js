@@ -21,8 +21,6 @@ module.exports = async function registration (req, res, next){
 	});
   }
 
-
-
   const finalUser = new Users(body);
 
   finalUser.setPassword(body.password);
