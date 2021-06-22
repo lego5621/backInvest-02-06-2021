@@ -23,6 +23,7 @@ module.exports = async function singleCompany( req, res ){
             historicalPrice: price.historicalPrice,
             dividendsPaid: price.dividendsPaid,
             statementPrognosis: price.statementPrognosis,
+			recommendationTrend: recommendationTrend(price.recommendationTrend)
 		});
 	} catch(err) {
 		res.status(500).json({
@@ -30,6 +31,35 @@ module.exports = async function singleCompany( req, res ){
 		})
         console.log(err.message)
 	}
+}
+
+
+function recommendationTrend(recommendationTrend){
+
+	let result = [[],[],[]]
+
+	for (let mon of recommendationTrend){
+		result[0].push(
+			mon.buy,
+		)
+	}
+	for (let mon of recommendationTrend){
+		result[1].push(
+			mon.hold,
+		)
+	}
+	for (let mon of recommendationTrend){
+		result[2].push(
+			mon.sell,
+		)
+	}
+
+	result[0]=result[0].reverse()
+	result[1]=result[1].reverse()
+	result[2]=result[2].reverse()
+
+
+	return result
 }
 
 

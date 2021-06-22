@@ -32,7 +32,7 @@ async function app(){
 	d= d.toJSON().split("T")[0]
 	
 	
-	console.log('Начало котировок с ',d)
+	// console.log('Начало котировок с ',d)
 	
 	
 	const ticker = 'aapl';
@@ -44,7 +44,7 @@ async function app(){
 	// const quote1 = await yahooFinance.default.quote(ticker);
 
 	// const statement = await yahooFinance.default.quoteSummary(ticker, { modules: [  "recommendationTrend", ] });
-const statement = await yahooFinance.default.quoteSummary(ticker, { modules: [  "netSharePurchaseActivity", ] });
+const statement = await yahooFinance.default.quoteSummary(ticker, { modules: [  "recommendationTrend", ] });
 
 	// const quote = await yahooFinance.default.quote(ticker, { fields: [ "marketCap", "regularMarketPrice" ]});
 
@@ -54,9 +54,43 @@ const statement = await yahooFinance.default.quoteSummary(ticker, { modules: [  
 	// if(!quote1.displayName){
 	// 	nameCompany= quote1.shortName
 	// }
-	console.log(ticker)
-	console.log(statement)
+	// console.log(ticker)
+	// console.log(statement.recommendationTrend.trend)
+	
+	let a = []
 
+	for (let mon of statement.recommendationTrend.trend){
+		a.push(
+			{
+				period: mon.period,
+				buy : mon.strongBuy + mon.buy,
+				hold : mon.strongBuy + mon.buy,
+				sell : mon.sell + mon.strongSell
+			}
+		)
+	}
+
+	console.log(a)
+
+	// let result = [[],[],[]]
+
+	// for (let mon of a){
+	// 	result[0].push(
+	// 		mon.buy,
+	// 	)
+	// }
+	// for (let mon of a){
+	// 	result[1].push(
+	// 		mon.hold,
+	// 	)
+	// }
+	// for (let mon of a){
+	// 	result[2].push(
+	// 		mon.sell,
+	// 	)
+	// }
+
+	// console.log(result)
 
 }
 

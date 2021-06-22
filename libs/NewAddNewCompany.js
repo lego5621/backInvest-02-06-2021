@@ -46,6 +46,9 @@ async function app(){
 	const statement = await yahooFinance.default.quoteSummary(ticker, { modules: [  "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend'] });
 	const quote = await yahooFinance.default.quote(ticker, { fields: [ "marketCap", "regularMarketPrice" ]});
 
+	const recommendationTrend = await yahooFinance.default.quoteSummary(ticker, { modules: [  "recommendationTrend", ] });
+
+
 	
 	let nameCompany= quote1.displayName;
 	
@@ -60,6 +63,7 @@ async function app(){
 		ticker: ticker.toLowerCase(),
 		currentPrice: setPrice(price)[setPrice(price).length-1].adjClose,
 		recommendationPrice: setPrice(price)[setPrice(price).length-1].adjTargetPrice,
+		recommendationTrend: getRecommendationTrend(recommendationTrend),
 
 		statementAll: getStatement(statement),
 		debtRatio: getDebtRatio(statement),
@@ -76,6 +80,24 @@ async function app(){
 }
 
 app()
+
+
+function getRecommendationTrend(recommendationTrend){
+	let result = []
+
+	for (let i of recommendationTrend.recommendationTrend.trend){
+		result.push(
+			{
+				period: i.period,
+				buy : i.strongBuy + i.buy,
+				hold : i.hold,
+				sell : i.sell + i.strongSell
+			}
+		)
+	}
+
+	return result
+}
 
 
 

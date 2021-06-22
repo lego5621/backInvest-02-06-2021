@@ -8,6 +8,10 @@ const CompanyScheme = new Schema({
 	avatar: String,
 	recommendationPrice: Number,
 	currentPrice: Number,
+	recommendationTrend:{
+		type:Object,
+		default: undefined
+	},
 	statementAll:{
 		type:Object,
 		default: undefined
