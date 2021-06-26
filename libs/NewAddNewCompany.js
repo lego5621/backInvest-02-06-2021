@@ -10,7 +10,7 @@ mongoose.connect("mongodb+srv://Oleg:zcxvcbvn123456@cluster0.q5cib.mongodb.net/m
 // import pkg from 'mongodb';
 // const { MongoClient } = pkg;
 
-async function app(){
+module.exports = async function app(z){
 
 	function setPrice(price){
 		let historicalPrice = [];
@@ -35,18 +35,18 @@ async function app(){
 	console.log('Начало котировок с ',d)
 	
 	
-	const ticker = 'gazp.me';
-	const description = "Публичное акционерное общество «Газпром» (ПАО «Газпром») — российская транснациональная энергетическая компания, более 50 % акций которой принадлежит государству. Является холдинговой компанией Группы «Газпром». Непосредственно ПАО «Газпром» осуществляет только продажу природного газа и сдаёт в аренду свою газотранспортную систему. "
-	const avatar = "https://s3-symbol-logo.tradingview.com/gazprom--600.png"
+	// const ticker = 't';
+	// const description = "afsdfsdfasdf"
+	// const avatar = "https://s3-symbol-logo.tradingview.com/apple--600.png"
 	const queryOptions = { period1: d};
 
-	const price = await yahooFinance.default.historical(ticker, queryOptions);
-	const quote1 = await yahooFinance.default.quote(ticker);
+	const price = await yahooFinance.default.historical(z.ticker, queryOptions);
+	const quote1 = await yahooFinance.default.quote(z.ticker);
 
-	const statement = await yahooFinance.default.quoteSummary(ticker, { modules: [  "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend'] });
-	const quote = await yahooFinance.default.quote(ticker, { fields: [ "marketCap", "regularMarketPrice" ]});
+	const statement = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend'] });
+	const quote = await yahooFinance.default.quote(z.ticker, { fields: [ "marketCap", "regularMarketPrice" ]});
 
-	const recommendationTrend = await yahooFinance.default.quoteSummary(ticker, { modules: [  "recommendationTrend", ] });
+	const recommendationTrend = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "recommendationTrend", ] });
 
 
 	
@@ -56,30 +56,34 @@ async function app(){
 		nameCompany= quote1.shortName
 	}
 
+	let currentPrice = setPrice(price)[setPrice(price).length-1].adjClose;
+	let recommendationPrice = setPrice(price)[setPrice(price).length-1].adjTargetPrice;
+
 	const allCompany = new Company({
 		name: nameCompany,
-		avatar: avatar,
-		description: description,
-		ticker: ticker.toLowerCase(),
+		avatar: z.avatar,
+		description: z.description,
+		ticker: z.ticker.toLowerCase(),
 		currentPrice: setPrice(price)[setPrice(price).length-1].adjClose,
 		recommendationPrice: setPrice(price)[setPrice(price).length-1].adjTargetPrice,
 		recommendationTrend: getRecommendationTrend(recommendationTrend),
+		profitPercentage: (recommendationPrice - currentPrice)/recommendationPrice * 100,
 
 		statementAll: getStatement(statement),
 		debtRatio: getDebtRatio(statement),
 		historicalPrice: setPrice(price),
-		dividendsPaid: await getDividendYear(ticker),
+		dividendsPaid: await getDividendYear(z.ticker),
 		statementPrognosis: getStatementPrognosis( quote , statement ),
 	});
 
 	allCompany.save(function(err){
-		mongoose.disconnect(); 
+		// mongoose.disconnect(); 
 		if(err) return console.log(err);
 		console.log("Сохранен объект");
 	});
 }
 
-app()
+// app()
 
 
 function getRecommendationTrend(recommendationTrend){

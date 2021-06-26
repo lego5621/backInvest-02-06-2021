@@ -7,6 +7,7 @@ const CompanyScheme = new Schema({
 	ticker: String,
 	avatar: String,
 	recommendationPrice: Number,
+	profitPercentage: Number,
 	currentPrice: Number,
 	recommendationTrend:{
 		type:Object,
@@ -21,7 +22,7 @@ const CompanyScheme = new Schema({
 		default: undefined
 	},
 	historicalPrice:{
-		type:Object,
+		type: Array,
 		default: undefined
 	},
 	dividendsPaid:{

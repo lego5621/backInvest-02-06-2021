@@ -14,9 +14,9 @@ module.exports = async function allStocks( req, res ){
         filterMongo = { currentPrice: 1 }
     }
 
-    // if(filter=='maxProfit'){
-    //     filterMongo = { 'historicalPrice.adjClose': 'desc' }
-    // }
+    if(filter=='maxProfit'){
+        filterMongo = { profitPercentage: -1 }
+    }
 
     try {
         const allCompany = await Company.find()
@@ -38,6 +38,7 @@ module.exports = async function allStocks( req, res ){
             res.description = allCompany.description
             res.ticker = allCompany.ticker
             res.avatar = allCompany.avatar
+            res.profitPercentage = allCompany.profitPercentage
             res.recommendationPrice = allCompany.recommendationPrice
             res.currentPrice = allCompany.currentPrice
             
