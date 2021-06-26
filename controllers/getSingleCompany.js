@@ -26,7 +26,7 @@ module.exports = async function singleCompany( req, res ){
 			recommendationTrend: recommendationTrend(price.recommendationTrend)
 		});
 	} catch(err) {
-		res.status(500).json({
+		res.status(404).json({
 			error: `Error: ${err.message}`,
 		})
         console.log(err.message)
