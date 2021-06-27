@@ -17,22 +17,22 @@ async function app(){
 
 
 	let d = new Date();
-	d =  new Date(d.setMonth(d.getMonth()))
+	d =  new Date()
 	d= d.toJSON().split("T")[0]
 	
 	
 	// console.log('Начало котировок с ',d)
 	
 	
-	const ticker = 'aapl';
+	// const ticker = 'aapl';
 
-	const queryOptions = { period1: d};
+	// const queryOptions = { period1: d};
 
-	const price = await yahooFinance.default.historical(ticker, queryOptions);
-	const recommendationTrend = await yahooFinance.default.quoteSummary(ticker, { modules: [  "financialData", ] });
+	// const price = await yahooFinance.default.historical(ticker, queryOptions);
+	// const recommendationTrend = await yahooFinance.default.quoteSummary(ticker, { modules: [  "financialData", ] });
 
 
-	console.log(recommendationTrend)
+	console.log(d)
 
 }
 

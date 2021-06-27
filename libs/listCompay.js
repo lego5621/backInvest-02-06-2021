@@ -35,12 +35,12 @@ let a =[
     },{
         ticker: 'FB',
         description : "Facebook — крупнейшая социальная сеть в мире и одноимённая компания Facebook, Inc., владеющая ею. Была основана 4 февраля 2004 года Марком Цукербергом и его соседями по комнате во время обучения в Гарвардском университете — Эдуардо Саверином, Дастином Московицем и Крисом Хьюзом.",
-        avatar : "https://pyxis.nymag.com/v1/imgs/11d/582/c7b0487c6e26db4f5be6eb679e3620d2ce-facebook.rsquare.w1200.jpg",
+        avatar : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/600px-Facebook_Logo_%282019%29.png",
     }
     ,{
         ticker: 'JPM',
         description : "JPMorgan Chase, «Джей Пи Морган Чейс» — американский финансовый холдинг, образовавшийся в результате слияния нескольких крупных банков США. Штаб-квартира банка находится в Нью-Йорке, на Манхэттене. Входит в «большую четвёрку» банков США, наряду с Bank of America, Citigroup и Wells Fargo.",
-        avatar : "https://smart-lab.ru/uploads/articles/00/35/52/thumbnail.webp",
+        avatar : "https://go.distance.ncsu.edu/gd203/wp-content/uploads/2020/04/704a1e534e8dc0138eee3ded449555d5-860x860.png",
     },{
         ticker: 'JNJ',
         description : "Johnson & Johnson, «Джонсон энд Джонсон» — американская холдинговая компания, возглавляющая группу из более чем 250 дочерних компаний по всему миру, производящих лекарственные препараты, санитарно-гигиенические товары и медицинское оборудование.",
@@ -48,7 +48,7 @@ let a =[
     },{
         ticker: 'GOOG',
         description : "Alphabet Inc. — холдинг, располагающийся в Калифорнии. Владеет несколькими компаниями, ранее принадлежавшими Google Inc, и самой Google Inc в том числе. В 2018 году заняла первое место в списке 500 лучших работодателей мира по мнению журнала Forbes.",
-        avatar : "https://c0.klipartz.com/pngpicture/869/485/gratis-png-logo-de-google-iconos-de-computadora-google.png",
+        avatar : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png",
     },{
         ticker: 'BAC',
         description : "Bank of America, «Бэнк ов Америка», Банк Америки — американский финансовый конгломерат, оказывающий широкий спектр финансовых услуг частным и юридическим лицам. Входит в четвёрку крупнейших банков США, наряду с Citigroup, Wells Fargo и JPMorgan Chase.",

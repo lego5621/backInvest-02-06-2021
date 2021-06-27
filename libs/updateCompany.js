@@ -12,9 +12,11 @@ mongoose.connect("mongodb+srv://Oleg:zcxvcbvn123456@cluster0.q5cib.mongodb.net/m
 
 async function app(){
 	let allCompany = await Company.find()
-	let d = new Date();
-	d =  new Date(d.setMonth(d.getMonth()))
-	d= d.toJSON().split("T")[0]
+	// let d = new Date();
+	// d =  new Date(d.setMonth(d.getMonth()))
+	// d= d.toJSON().split("T")[0]
+
+	let d = '2021-06-25'
 
 	// for (let i of allCompany){
 	allCompany.forEach(async (i) => {

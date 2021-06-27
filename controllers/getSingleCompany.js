@@ -23,7 +23,8 @@ module.exports = async function singleCompany( req, res ){
             historicalPrice: price.historicalPrice,
             dividendsPaid: price.dividendsPaid,
             statementPrognosis: price.statementPrognosis,
-			recommendationTrend: recommendationTrend(price.recommendationTrend)
+			recommendationTrend: recommendationTrend(price.recommendationTrend),
+			profitPercentage : price.profitPercentage,
 		});
 	} catch(err) {
 		res.status(404).json({
