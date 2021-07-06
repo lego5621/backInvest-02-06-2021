@@ -43,7 +43,7 @@ module.exports = async function app(z){
 	const price = await yahooFinance.default.historical(z.ticker, queryOptions);
 	const quote1 = await yahooFinance.default.quote(z.ticker);
 
-	const statement = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend'] });
+	const statement = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend', 'assetProfile'] });
 	const quote = await yahooFinance.default.quote(z.ticker, { fields: [ "marketCap", "regularMarketPrice" ]});
 
 	const recommendationTrend = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "recommendationTrend", ] });
@@ -63,6 +63,13 @@ module.exports = async function app(z){
 		name: nameCompany,
 		avatar: z.avatar,
 		description: z.description,
+		
+		city: statement.assetProfile.city,
+		country: statement.assetProfile.country,
+		sector: statement.assetProfile.sector,
+		site: statement.assetProfile.website,
+		auditRisk: statement.assetProfile.overallRisk,
+
 		ticker: z.ticker.toLowerCase(),
 		currentPrice: setPrice(price)[setPrice(price).length-1].adjClose,
 		recommendationPrice: setPrice(price)[setPrice(price).length-1].adjTargetPrice,
@@ -132,15 +139,13 @@ function getDebtRatio(result){
         TotalDebtRatio.push(
             {
                 year: item.endDate.getFullYear(),
-                percent: Math.round((item.totalLiab / item.totalAssets)  * 100)
+                percent: Math.round((item.totalLiab / item.totalAssets) * 100)
             }
         )
 	});
 	return TotalDebtRatio
 }
  
-
-
 
 
 function getStatementPrognosis(result,  statement){
@@ -156,8 +161,6 @@ function getStatementPrognosis(result,  statement){
      
     return erning
 }
-
-
 
 
 

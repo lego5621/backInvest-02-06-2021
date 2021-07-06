@@ -12,11 +12,15 @@ mongoose.connect("mongodb+srv://Oleg:zcxvcbvn123456@cluster0.q5cib.mongodb.net/m
 
 async function app(){
 	let allCompany = await Company.find()
-	// let d = new Date();
-	// d =  new Date(d.setMonth(d.getMonth()))
-	// d= d.toJSON().split("T")[0]
+	let d =  new Date(Date.now()-86400000)
+	// let d =  new Date()
+	
 
-	let d = '2021-06-25'
+	d= d.toJSON().split("T")[0]
+	
+	console.log(d)
+
+	// d = '2021-07-02'
 
 	// for (let i of allCompany){
 	allCompany.forEach(async (i) => {
@@ -31,7 +35,7 @@ async function app(){
 		let statement = await yahooFinance.default.quoteSummary(i.ticker, { modules: [ "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend'] });
 		let quote = await yahooFinance.default.quote(i.ticker, { fields: [ "marketCap", "regularMarketPrice" ]});
 
-		let recommendationTrend = await yahooFinance.default.quoteSummary(i.ticker, { modules: [  "recommendationTrend", ] });
+		let recommendationTrend = await yahooFinance.default.quoteSummary(i.ticker, { modules: [  "recommendationTrend", "assetProfile"] });
 		let targetMedianPrice = await yahooFinance.default.quoteSummary(i.ticker, { modules: [  "financialData", ] });
 
 
@@ -40,6 +44,7 @@ async function app(){
 		company.recommendationTrend = getRecommendationTrend(recommendationTrend)
 		company.statementAll = getStatement(statement)
 		company.debtRatio = getDebtRatio(statement)
+		company.auditRisk = recommendationTrend.assetProfile.auditRisk
 		company.dividendsPaid = await getDividendYear( company.ticker )
 		company.statementPrognosis = getStatementPrognosis( quote , statement )
 		company.profitPercentage = Math.floor((targetMedianPrice.financialData.targetMedianPrice - price[0].adjClose)/targetMedianPrice.financialData.targetMedianPrice * 100);

@@ -36,6 +36,11 @@ module.exports = async function allStocks( req, res ){
 
             res.name = allCompany.name
             res.description = allCompany.description
+            res.city = allCompany.city,
+            res.country = allCompany.country,
+            res.sector = allCompany.sector,
+            res.site = allCompany.website,
+            res.auditRisk = allCompany.auditRisk,
             res.ticker = allCompany.ticker
             res.avatar = allCompany.avatar
             res.profitPercentage = allCompany.profitPercentage

@@ -4,6 +4,11 @@ const Schema = mongoose.Schema;
 const CompanyScheme = new Schema({
 	name: String,
 	description: String,
+	city: String,
+	country: String,
+	sector: String,
+	site: String,
+	auditRisk: Number,
 	ticker: String,
 	avatar: String,
 	recommendationPrice: Number,

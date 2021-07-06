@@ -19,7 +19,8 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "translate-api": "^0.3.18",
-    "yahoo-finance2": "^1.10.4"
+    "translatte": "^3.0.1",
+    "yahoo-finance2": "^1.14.0"
   },
   "devDependencies": {},
   "scripts": {

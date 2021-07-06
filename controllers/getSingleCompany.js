@@ -16,6 +16,11 @@ module.exports = async function singleCompany( req, res ){
 		res.json({
             name: price.name,
             description: price.description,
+			city : price.city,
+            country : price.country,
+            sector : price.sector,
+            site : price.site,
+			auditRisk:price.auditRisk,
             avatar: price.avatar,
             ticker: ticker,
             statementAll:price.statementAll,
