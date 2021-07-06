@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 require('../models/Company');
 const Company = mongoose.model('Company');
 const yahooFinance = require('yahoo-finance2');
+const translatte = require('translatte');
 
 mongoose.promise = global.Promise;
 
@@ -59,10 +60,24 @@ module.exports = async function app(z){
 	let currentPrice = setPrice(price)[setPrice(price).length-1].adjClose;
 	let recommendationPrice = setPrice(price)[setPrice(price).length-1].adjTargetPrice;
 
+	let descriptionChec = ""
+
+	if(z.description){
+		descriptionChec = z.description
+	}else{
+		await translatte(statement.assetProfile.longBusinessSummary, {to: 'ru'}).then(res => {
+			descriptionChec = res.text.substring(0,220) +res.text.substring(220).split('.')[0] 
+		}).catch(err => {
+			console.error(err);
+			console.log(`${nameCompany} перевод не добавлен`)
+		});
+	}
+
+
 	const allCompany = new Company({
 		name: nameCompany,
-		avatar: z.avatar,
-		description: z.description,
+		avatar: z.avatar || "",
+		description: descriptionChec,
 		
 		city: statement.assetProfile.city,
 		country: statement.assetProfile.country,
