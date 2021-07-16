@@ -32,22 +32,30 @@ async function app(){
 	
 		let price = await yahooFinance.default.historical(i.ticker, queryOptions);
 
-		let statement = await yahooFinance.default.quoteSummary(i.ticker, { modules: [ "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend'] });
-		let quote = await yahooFinance.default.quote(i.ticker, { fields: [ "marketCap", "regularMarketPrice" ]});
+		let statement = await yahooFinance.default.quoteSummary(i.ticker, { modules: [  "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend', 'assetProfile', 'earningsHistory','upgradeDowngradeHistory', 'financialData', 'summaryDetail'] },{ validateResult: false });
+		let quote = await yahooFinance.default.quote(i.ticker, { fields: [ "marketCap", "regularMarketPrice", "priceToBook", "epsCurrentYear", "forwardPE" ]});
 
-		let recommendationTrend = await yahooFinance.default.quoteSummary(i.ticker, { modules: [  "recommendationTrend", "assetProfile"] });
 		let targetMedianPrice = await yahooFinance.default.quoteSummary(i.ticker, { modules: [  "financialData", ] });
+
 
 
 		company.recommendationPrice = targetMedianPrice.financialData.targetMedianPrice		
 		
-		company.recommendationTrend = getRecommendationTrend(recommendationTrend)
+		//company.recommendationTrend = getRecommendationTrend(recommendationTrend)
 		company.statementAll = getStatement(statement)
-		company.debtRatio = getDebtRatio(statement)
-		company.auditRisk = recommendationTrend.assetProfile.auditRisk
-		company.dividendsPaid = await getDividendYear( company.ticker )
+		//company.debtRatio = getDebtRatio(statement)
+		//company.overallRisk = recommendationTrend.assetProfile.overallRisk
+		//company.dividendsPaid = await getDividendYear( company.ticker )
 		company.statementPrognosis = getStatementPrognosis( quote , statement )
 		company.profitPercentage = Math.floor((targetMedianPrice.financialData.targetMedianPrice - price[0].adjClose)/targetMedianPrice.financialData.targetMedianPrice * 100);
+
+		company.ROA = statement.financialData.returnOnAssets*100,
+		company.ROE = statement.financialData.returnOnEquity*100,
+		company.ROS = statement.financialData.grossProfits/statement.financialData.totalRevenue*100,
+		company.PE = statement.summaryDetail.trailingPE || 0,
+		company.PB = quote.priceToBook || 0,
+		company.PS = quote.marketCap/statement.financialData.totalRevenue || 0,
+		company.DE = statement.financialData.debtToEquity || 0,
 		
 		company.historicalPrice.push({
 			date: price[0].date,

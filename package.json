@@ -12,6 +12,7 @@
     "free-translate": "^0.4.0",
     "google-translate-free": "^2.4.5",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
     "mongoose": "^5.12.12",
     "morgan": "^1.10.0",
     "node-google-translate-free": "^0.1.0",

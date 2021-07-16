@@ -47,8 +47,6 @@ let a =[
         description : "Bank of America, «Бэнк ов Америка», Банк Америки — американский финансовый конгломерат, оказывающий широкий спектр финансовых услуг частным и юридическим лицам. Входит в четвёрку крупнейших банков США, наряду с Citigroup, Wells Fargo и JPMorgan Chase.",
         avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgtCABoe9E-0I18DIcS-DtsV71oQ0cpZbRWA&usqp=CAU",
     },{
-        ticker: 'BAC',
-    },{
         ticker: 'INTC',
         description : "Intel — американская компания, разработчик и производитель электронных устройств и компьютерных компонентов: микропроцессоров и наборов системной логики для клиентских вычислительных систем и для дата-центров, ПЛИС, чипов для систем искусственного интеллекта и для интернета вещей, энергонезависимой памяти.",
         avatar : "https://s3-symbol-logo.tradingview.com/intel--600.png",
@@ -58,46 +56,47 @@ let a =[
         avatar : "https://s3-symbol-logo.tradingview.com/at-and-t--600.png",
     },{
         ticker: 'V',
-    },{
-        ticker: 'CSCO',
-    },{
-        ticker: 'CVX',
-    },{
-        ticker: 'UNH',
-    },{
-        ticker: 'PFE',
-    },{
-        ticker: 'HD',
-    },{
-        ticker: 'PG',
-    },{
-        ticker: 'VZ',
-        avatar:"https://i.piccy.info/i9/2e67c7edec89b98ca075341116c8d0e3/1625572700/26702/1433588/eb75ffe419c3cc15db8e007e32e74771.png",
-    },{
-        ticker: 'C',
-    },{
-        ticker: 'ABBV',
-    },{
-        ticker: 'BA',
-    },{
-        ticker: 'KO',
-    },{
-        ticker: 'CMCSA',
-    },{
-        ticker: 'MA',
-    },{
-        ticker: 'PM',
-    },{
-        ticker: 'PEP',
-    },{
-        ticker: 'ORCL',
-    },{
-        ticker: 'DIS',
-    },{
-        ticker: 'MRK',
-    },{
-        ticker: 'NVDA',
-    },    
+    },
+    // {
+    //     ticker: 'CSCO',
+    // },{
+    //     ticker: 'CVX',
+    // },{
+    //     ticker: 'UNH',
+    // },{
+    //     ticker: 'PFE',
+    // },{
+    //     ticker: 'HD',
+    // },{
+    //     ticker: 'PG',
+    // },{
+    //     ticker: 'VZ',
+    //     avatar:"https://i.piccy.info/i9/2e67c7edec89b98ca075341116c8d0e3/1625572700/26702/1433588/eb75ffe419c3cc15db8e007e32e74771.png",
+    // },{
+    //     ticker: 'C',
+    // },{
+    //     ticker: 'ABBV',
+    // },{
+    //     ticker: 'BA',
+    // },{
+    //     ticker: 'KO',
+    // },{
+    //     ticker: 'CMCSA',
+    // },{
+    //     ticker: 'MA',
+    // },{
+    //     ticker: 'PM',
+    // },{
+    //     ticker: 'PEP',
+    // },{
+    //     ticker: 'ORCL',
+    // },{
+    //     ticker: 'DIS',
+    // },{z
+    //     ticker: 'MRK',
+    // },{
+    //     ticker: 'NVDA',
+    // },    
 ];
 
 a.forEach(async (i) => {

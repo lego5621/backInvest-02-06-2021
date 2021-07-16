@@ -4,40 +4,56 @@ const Schema = mongoose.Schema;
 const CompanyScheme = new Schema({
 	name: String,
 	description: String,
-	city: String,
+	fullDescription: String,
 	country: String,
 	sector: String,
-	site: String,
-	auditRisk: Number,
 	ticker: String,
 	avatar: String,
 	recommendationPrice: Number,
 	profitPercentage: Number,
 	currentPrice: Number,
-	recommendationTrend:{
+	recommendationText: String,
+	/*recommendationTrend:{
 		type:Object,
 		default: undefined
-	},
+	},*/
 	statementAll:{
 		type:Object,
 		default: undefined
 	},
-	debtRatio:{
+	/*debtRatio:{
 		type:Object,
 		default: undefined
-	},
+	},*/
 	historicalPrice:{
 		type: Array,
 		default: undefined
 	},
-	dividendsPaid:{
+	/*dividendsPaid:{
 		type:Object,
 		default: undefined
-	},
+	},*/
 	statementPrognosis:{
 		type:Object,
 		default: undefined
 	},
+	/*otherFactors:{
+		type:Object,
+		default: undefined
+	},*/
+	/*analystsGrade:{
+		type: Array,
+		default: undefined
+	},*/
+
+	ROA: Number,
+	ROE: Number,
+	ROS: Number,
+	PE: Number,
+	PB: Number,
+	PS: Number,
+	DE: Number,
+
 });
 
 mongoose.model("Company", CompanyScheme);

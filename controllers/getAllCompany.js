@@ -40,7 +40,7 @@ module.exports = async function allStocks( req, res ){
             res.country = allCompany.country,
             res.sector = allCompany.sector,
             res.site = allCompany.website,
-            res.auditRisk = allCompany.auditRisk,
+            res.overallRisk = allCompany.overallRisk,
             res.ticker = allCompany.ticker
             res.avatar = allCompany.avatar
             res.profitPercentage = allCompany.profitPercentage
@@ -65,3 +65,4 @@ module.exports = async function allStocks( req, res ){
         })
     }
 }
+
