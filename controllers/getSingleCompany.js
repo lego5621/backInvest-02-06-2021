@@ -33,7 +33,9 @@ module.exports = async function singleCompany( req, res ){
 			profitPercentage: price.profitPercentage,
 			//otherFactors: price.otherFactors,
 			//analystsGrade:price.analystsGrade,
-
+			
+			QAnalysis: price.QAnalysis,
+			liabCapital: price.liabCapital,
 			ROA: price.ROA,
 			ROE: price.ROE,
 			ROS: price.ROS,

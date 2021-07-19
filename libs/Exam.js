@@ -19,12 +19,17 @@ moment.locale('ru')
 async function app(){
 
     
-    let ticker1 = 'bac'
-    const result = await yahooFinance.default.quoteSummary(ticker1, { modules: [ "upgradeDowngradeHistory" ] },{ validateResult: false });
-    // const result = await yahooFinance.default.quote('AAPL');
+    let ticker1 = 'aapl'
+    const result = await yahooFinance.default.quoteSummary(ticker1, { modules: [ "earningsHistory" ] },{ validateResult: false });
 
+    const arr = {
+        epsActual:result.earningsHistory.history[3].epsActual,
+        epsEstimate:result.earningsHistory.history[3].epsEstimate,
+        surprisePercent:result.earningsHistory.history[3].surprisePercent,
+    }
+    
 
-    console.log(result.upgradeDowngradeHistory)
+    console.log(arr)
     
 }
 

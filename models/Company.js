@@ -13,6 +13,14 @@ const CompanyScheme = new Schema({
 	profitPercentage: Number,
 	currentPrice: Number,
 	recommendationText: String,
+	QAnalysis:{
+		type:Array,
+		default: undefined
+	},
+	liabCapital:{
+		type:Array,
+		default: undefined
+	},
 	/*recommendationTrend:{
 		type:Object,
 		default: undefined

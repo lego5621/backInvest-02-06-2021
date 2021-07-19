@@ -56,6 +56,7 @@ async function app(){
 		company.PB = quote.priceToBook || 0,
 		company.PS = quote.marketCap/statement.financialData.totalRevenue || 0,
 		company.DE = statement.financialData.debtToEquity || 0,
+		QAnalysis =getQAnalysis(statement)
 		
 		company.historicalPrice.push({
 			date: price[0].date,
@@ -74,6 +75,15 @@ async function app(){
 }
 
 app()
+
+function getQAnalysis(result){
+	const arr = {
+        epsActual:result.earningsHistory.history[3].epsActual,
+        epsEstimate:result.earningsHistory.history[3].epsEstimate,
+        surprisePercent:result.earningsHistory.history[3].surprisePercent,
+    }
+	return arr
+}
 
 
 function getRecommendationTrend(recommendationTrend){

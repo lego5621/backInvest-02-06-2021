@@ -102,16 +102,18 @@ module.exports = async function app(z){
 
 		statementAll: getStatement(statement),
 		//debtRatio: getDebtRatio(statement),
+		liabCapital: getLiabCapital(statement),
 		historicalPrice: setPrice(price),
 		//dividendsPaid:await getDividendYear(z.ticker),
 		statementPrognosis: getStatementPrognosis( quote , statement ),
 		//otherFactors: getOtherFactors( statement, insights ),
 		//analystsGrade: getGrade(statement)
 
+		QAnalysis:getQAnalysis(statement),
 		ROA: statement.financialData.returnOnAssets*100,
 		ROE: statement.financialData.returnOnEquity*100,
 		ROS: statement.financialData.grossProfits/statement.financialData.totalRevenue*100,
-		PE: statement.summaryDetail.trailingPE,
+		PE: statement.summaryDetail.trailingPE || 0 ,
 		PB: quote.priceToBook,
 		PS: quote.marketCap/statement.financialData.totalRevenue,
 		DE: statement.financialData.debtToEquity || 0,
@@ -126,6 +128,30 @@ module.exports = async function app(z){
 }
 
 // app()
+
+function getQAnalysis(result){
+	const arr = {
+        epsActual:result.earningsHistory.history[3].epsActual,
+        epsEstimate:result.earningsHistory.history[3].epsEstimate,
+        surprisePercent:result.earningsHistory.history[3].surprisePercent,
+    }
+	return arr
+}
+
+function getLiabCapital(result){
+	let getLiabCapital = []
+
+	result.balanceSheetHistory.balanceSheetStatements.forEach(function(item, i, arr) {
+		getLiabCapital.push(
+			{
+				year: item.endDate.getFullYear(),
+				totalLiab: item.totalLiab,
+				shareCapital: item.totalAssets-item.totalLiab,
+			}
+		)
+	});
+	return getLiabCapital
+}
 
 function getOtherFactors( result, insights ){
 	let obj={}
