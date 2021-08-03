@@ -37,7 +37,7 @@ require('./config/passport');
 
 // Routes
 
-app.use(express.static('dist_front'));
+app.use(express.static('dist'));
 app.use(require('./routes'));
 
 
