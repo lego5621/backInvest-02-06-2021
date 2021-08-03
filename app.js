@@ -40,29 +40,28 @@ app.use(require('./routes'));
 
 
 //Error handlers & middlewares
-if(!process.env.PRODUCTION) {
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500);
+// if(!process.env.PRODUCTION) {
+//   app.use((err, req, res, next) => {
+//     res.status(err.status || 500);
 
-    res.json({
-      errors: {
-        message: err.message,
-        error: err,
-      },
-    });
-  });
-}
-
-// app.use((err, req, res, next) => {
-//   res.status(err.status || 500);
-
-//   res.json({
-//     errors: {
-//       message: err.message,
-//       error: {},
-//     },
+//     res.json({
+//       errors: {
+//         message: err.message,
+//         error: err,
+//       },
+//     });
 //   });
-// });
+// }
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+
+  res.json({
+    errors: {
+      message: err.message,
+    },
+  });
+});
 
 app.use(function(req, res, next) {
 	res.status(404).json({
