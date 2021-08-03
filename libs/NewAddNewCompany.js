@@ -54,7 +54,7 @@ module.exports = async function app(z){
 	// const queryOptionsInsights = { lang: 'en-US', reportsCount: 2, region: 'US' };
 	// const insights = await yahooFinance.default.insights(z.ticker, queryOptionsInsights,{ validateResult: false });
 
-	// const recommendationTrend = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "recommendationTrend", ] });
+	const recommendationTrend = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "recommendationTrend", ] });
 
 
 	
@@ -81,44 +81,44 @@ module.exports = async function app(z){
 		descriptionChec = z.description
 	}
 
+	let statementPrognosisG = getStatementPrognosis( quote , statement )
 
-	const allCompany = new Company({
+
+	const companyData = {
 		name: nameCompany,
 		avatar: z.avatar || "",
 		description: descriptionChec,
 		fullDescription: fullDescription,
-		
-		// city: statement.assetProfile.city,
 		country: statement.assetProfile.country,
 		sector: statement.assetProfile.sector,
-		// site: statement.assetProfile.website,
-		// overallRisk: statement.assetProfile.overallRisk,
-
 		ticker: z.ticker.toLowerCase(),
 		currentPrice: setPrice(price)[setPrice(price).length-1].adjClose,
 		recommendationPrice: setPrice(price)[setPrice(price).length-1].adjTargetPrice,
-		//recommendationTrend: getRecommendationTrend(recommendationTrend),
+		recommendationTrend: getRecommendationTrend(recommendationTrend),
 		profitPercentage: (recommendationPrice - currentPrice)/recommendationPrice * 100,
 
 		statementAll: getStatement(statement),
-		//debtRatio: getDebtRatio(statement),
-		liabCapital: getLiabCapital(statement),
+		debtRatio: getDebtRatio(statement),
 		historicalPrice: setPrice(price),
-		//dividendsPaid:await getDividendYear(z.ticker),
-		statementPrognosis: getStatementPrognosis( quote , statement ),
+		dividendsPaid: await getDividendYear(z.ticker),
+		statementPrognosis: statementPrognosisG,
+		stocks: getstocks(statement),
+		analystsGrade: getGrade(statement),
+
+		showCompany: statementPrognosisG[0].earnings==0 ? false : true,
+
+
+
+		// liabCapital: getLiabCapital(statement),
 		//otherFactors: getOtherFactors( statement, insights ),
-		//analystsGrade: getGrade(statement)
+		// site: statement.assetProfile.website,
+		// overallRisk: statement.assetProfile.overallRisk,
+		// city: statement.assetProfile.city,
 
-		QAnalysis:getQAnalysis(statement),
-		ROA: statement.financialData.returnOnAssets*100,
-		ROE: statement.financialData.returnOnEquity*100,
-		ROS: statement.financialData.grossProfits/statement.financialData.totalRevenue*100,
-		PE: statement.summaryDetail.trailingPE || 0 ,
-		PB: quote.priceToBook,
-		PS: quote.marketCap/statement.financialData.totalRevenue,
-		DE: statement.financialData.debtToEquity || 0,
 
-	});
+	};
+
+	const allCompany = new Company( companyData );
 
 	allCompany.save(function(err){
 		// mongoose.disconnect(); 
@@ -131,7 +131,7 @@ module.exports = async function app(z){
 
 function getQAnalysis(result){
 	const arr = {
-        epsActual:result.earningsHistory.history[3].epsActual,
+        epsActual:result.earningsHistory.history[3].epsActual ,
         epsEstimate:result.earningsHistory.history[3].epsEstimate,
         surprisePercent:result.earningsHistory.history[3].surprisePercent,
     }
@@ -249,16 +249,23 @@ function getDebtRatio(result){
 
 function getStatementPrognosis(result,  statement){
 
-    let earnings = Math.round( (result.marketCap / result.regularMarketPrice) * statement.earningsTrend.trend[2].earningsEstimate.avg )
-    
-    
-    let erning =  {
-        year: statement.earningsTrend.trend[2].endDate ? statement.earningsTrend.trend[2].endDate.getFullYear() : null,
-        revenue: statement.earningsTrend.trend[2].revenueEstimate.avg,
-        earnings: earnings
-	}
-     
-    return erning
+	let earnings1 = Math.round( (result.marketCap / result.regularMarketPrice) * statement.earningsTrend.trend[2].earningsEstimate.avg )
+	let earnings2 = Math.round( (result.marketCap / result.regularMarketPrice) * statement.earningsTrend.trend[3].earningsEstimate.avg )
+	
+	
+	let erning =[  
+		{
+			year: statement.earningsTrend.trend[2].endDate ? statement.earningsTrend.trend[2].endDate.getFullYear() : null,
+			revenue: statement.earningsTrend.trend[2].revenueEstimate.avg,
+			earnings: earnings1
+		},{
+			year: statement.earningsTrend.trend[3].endDate ? statement.earningsTrend.trend[3].endDate.getFullYear() : null,
+			revenue: statement.earningsTrend.trend[3].revenueEstimate.avg,
+			earnings: earnings2
+		} 
+	]
+	 
+	return erning
 }
 
 
@@ -266,7 +273,7 @@ function getStatementPrognosis(result,  statement){
 async function getDividendYear(ticker){
 	try {
     
-		const OptionsDividendHistory = { period1: '2016-01-01', events:'dividends'};
+		const OptionsDividendHistory = { period1: '2010-01-01', events:'dividends'};
 		const quote = await yahooFinance.default.historical( ticker, OptionsDividendHistory,{ validateResult: false });
 
 		let a =	quote.sort(function(a,b){
@@ -274,43 +281,50 @@ async function getDividendYear(ticker){
 		});
 
 		function divFun( a, Year ){
-			let arr = []
-			for( let value of a ){
-				if( value.date.getFullYear() == Year) {
-					arr.push(value)		
-				}
-			}
-			
-			let sum = { year: Year, percent:0}
-			
-			for(let i of arr){
-				sum.percent = sum.percent + i.dividends
-			}
+            let arr = []
+            for( let value of a ){
+                if( value.date.getFullYear() == Year) {
+                    arr.push(value)		
+                }
+            }
+            
+            let sum = { year: Year, percent:0}
+            
+            for(let i of arr){
+                sum.percent = sum.percent + i.dividends
+            }
 
-			sum.percent = sum.percent.toFixed(2)
+            sum.percent = sum.percent.toFixed(2)
 
-			return sum
-		}
+            return sum
+        }
 		
 		let arrDev = [
 			divFun(a,new Date().getFullYear()-1),
 			divFun(a,new Date().getFullYear()-2),
 			divFun(a,new Date().getFullYear()-3),
-			divFun(a,new Date().getFullYear()-4)
+			divFun(a,new Date().getFullYear()-4),
+			divFun(a,new Date().getFullYear()-5),
+			divFun(a,new Date().getFullYear()-6),
+			divFun(a,new Date().getFullYear()-7),
+			divFun(a,new Date().getFullYear()-8),
+			divFun(a,new Date().getFullYear()-9),
+			divFun(a,new Date().getFullYear()-10),
 		]
 
 		return arrDev
 
 	} catch (err) {
-		return arrDev = [{ year: null, percent:null}]
+		return arrDev = []
 	}
 }
 
 function getGrade(result){
 	let arr=[]
 
-	for( let i of result.upgradeDowngradeHistory.history ){
-		if(toStr(i.toGrade )){
+	if (result.upgradeDowngradeHistory){
+
+		for( let i of result.upgradeDowngradeHistory.history ){
 			arr.push({
 				date: moment(i.epochGradeDate).locale("ru").format("L"),
 				toGrade: i.toGrade,
@@ -321,12 +335,19 @@ function getGrade(result){
 		}
 	}
 
-	function toStr(str){
-		if(str == 'Overweight')return true
-		if(str == 'Buy')return true
-		if(str == 'Outperform')return true
-		if(str == 'Sell')return true
-		return false
-	}
+	return arr
+}
+
+
+function getstocks(result){
+	let arr = []
+
+    for (let i of result.cashflowStatementHistory.cashflowStatements){
+        arr.push({
+            date:i.endDate,
+            commonStock:i.repurchaseOfStock
+        })
+    }
+
 	return arr
 }

@@ -13,34 +13,31 @@ const CompanyScheme = new Schema({
 	profitPercentage: Number,
 	currentPrice: Number,
 	recommendationText: String,
-	QAnalysis:{
+	showCompany: Boolean,
+	stocks:{
 		type:Array,
 		default: undefined
 	},
-	liabCapital:{
-		type:Array,
-		default: undefined
-	},
-	/*recommendationTrend:{
+	recommendationTrend:{
 		type:Object,
 		default: undefined
-	},*/
+	},
 	statementAll:{
 		type:Object,
 		default: undefined
 	},
-	/*debtRatio:{
+	debtRatio:{
 		type:Object,
 		default: undefined
-	},*/
+	},
 	historicalPrice:{
 		type: Array,
 		default: undefined
 	},
-	/*dividendsPaid:{
-		type:Object,
+	dividendsPaid:{
+		type: Array,
 		default: undefined
-	},*/
+	},
 	statementPrognosis:{
 		type:Object,
 		default: undefined
@@ -49,18 +46,10 @@ const CompanyScheme = new Schema({
 		type:Object,
 		default: undefined
 	},*/
-	/*analystsGrade:{
+	analystsGrade:{
 		type: Array,
 		default: undefined
-	},*/
-
-	ROA: Number,
-	ROE: Number,
-	ROS: Number,
-	PE: Number,
-	PB: Number,
-	PS: Number,
-	DE: Number,
+	},
 
 });
 

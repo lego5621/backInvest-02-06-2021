@@ -3,7 +3,7 @@ const Company = mongoose.model('Company');
 
 module.exports = async function allStocks( req, res ){
     try {
-        const allCompany = await Company.find();
+        const allCompany = await Company.find({ showCompany: true });
 
 
         if(allCompany.length == 0){

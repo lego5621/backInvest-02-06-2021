@@ -4,23 +4,26 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
 const errorHandler = require('errorhandler');
+require('dotenv').config();
 
-const isProduction = true;
 
 //Initiate our app
 const app = express();
 
+// app.use(require('morgan')('dev'));
+
+
 //Configure our app
 app.use(cors());
-app.use(require('morgan')('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+app.use(session({ secret: 'passportForSecretSite31', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
-if(!isProduction) {
+if(process.env.PRODUCTION) {
   app.use(errorHandler());
 }
+
 
 
 //Configure Mongoose
@@ -37,7 +40,7 @@ app.use(require('./routes'));
 
 
 //Error handlers & middlewares
-if(!isProduction) {
+if(process.env.PRODUCTION) {
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
 
@@ -50,16 +53,16 @@ if(!isProduction) {
   });
 }
 
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
+// app.use((err, req, res, next) => {
+//   res.status(err.status || 500);
 
-  res.json({
-    errors: {
-      message: err.message,
-      error: {},
-    },
-  });
-});
+//   res.json({
+//     errors: {
+//       message: err.message,
+//       error: {},
+//     },
+//   });
+// });
 
 app.use(function(req, res, next) {
 	res.status(404).json({
@@ -68,6 +71,6 @@ app.use(function(req, res, next) {
 });
 
 
-app.listen(3000,() => {
-  console.log(`Running on PORT 3000`);
+app.listen(process.env.PORT,() => {
+  console.log(`Running on PORT ${process.env.PORT}`);
 })

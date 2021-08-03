@@ -8,7 +8,7 @@ module.exports = async function singleCompany( req, res ){
 	
 	try {
 
-		let price = await Company.findOne({ ticker:ticker }, function(err){
+		let price = await Company.findOne({ ticker:ticker, showCompany: true }, function(err){
 			if(err) return console.log(err);
 		});
 
@@ -25,24 +25,16 @@ module.exports = async function singleCompany( req, res ){
             avatar: price.avatar,
             ticker: ticker,
             statementAll:price.statementAll,
-            //debtRatio: price.debtRatio,
+            debtRatio: price.debtRatio,
             historicalPrice: price.historicalPrice,
-            //dividendsPaid: price.dividendsPaid,
+            dividendsPaid: price.dividendsPaid,
             statementPrognosis: price.statementPrognosis,
-			//recommendationTrend: recommendationTrend(price.recommendationTrend),
+			recommendationTrend: recommendationTrend(price.recommendationTrend),
 			profitPercentage: price.profitPercentage,
+			recommendationPrice: price.recommendationPrice,
 			//otherFactors: price.otherFactors,
-			//analystsGrade:price.analystsGrade,
-			
-			QAnalysis: price.QAnalysis,
-			liabCapital: price.liabCapital,
-			ROA: price.ROA,
-			ROE: price.ROE,
-			ROS: price.ROS,
-			PE: price.PE,
-			PB: price.PB,
-			PS: price.PS,
-			DE: price.DE,
+			analystsGrade:price.analystsGrade,
+			stocks: price.stocks
 		});
 	} catch(err) {
 		res.status(404).json({

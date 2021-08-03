@@ -5,7 +5,9 @@ const Users = mongoose.model('Users');
 module.exports = async function registration (req, res, next){
   const { body } = req;
 
-  if(!body.email) {
+  console.log(body)
+
+  if(!body.email || body.email.trim() == '') {
 	return res.status(422).json({
 	  errors: {
 		email: 'is required',
@@ -13,7 +15,23 @@ module.exports = async function registration (req, res, next){
 	});
   }
 
-  if(!body.password) {
+  if(!body.password || body.password.trim() == '') {
+	return res.status(422).json({
+	  errors: {
+		password: 'is required',
+	  },
+	});
+  }
+
+  if(!body.firstname || body.firstname.trim() == '') {
+	return res.status(422).json({
+	  errors: {
+		password: 'is required',
+	  },
+	});
+  }
+
+  if(!body.lastname || body.lastname.trim() == '') {
 	return res.status(422).json({
 	  errors: {
 		password: 'is required',

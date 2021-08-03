@@ -19,7 +19,9 @@ module.exports = async function allStocks( req, res ){
     }
 
     try {
-        const allCompany = await Company.find()
+        const allCompany = await Company.find({ showCompany: true }, function(err){
+			if(err) return console.log(err);
+		})
             .sort(filterMongo)
             .limit(limit * 1)
             .skip((page - 1) * limit)
@@ -50,7 +52,7 @@ module.exports = async function allStocks( req, res ){
             return res
         })
     
-        const count = await Company.countDocuments();
+        const count = await Company.countDocuments({ showCompany: true });
     
         res.json({
             company,

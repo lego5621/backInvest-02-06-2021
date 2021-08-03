@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 require('../models/Company');
 const Company = mongoose.model('Company');
-const yahooFinance = require('yahoo-finance2');
+const yahooFinance = require('yahoo-finance2').default;
 const moment = require('moment');
 
 const translatte = require('translatte');
 moment.locale('ru')
 
+const tipranksApi = require('tipranks-api-v2');
 
- 
+
 
 
 // mongoose.connect("mongodb+srv://Oleg:zcxvcbvn123456@cluster0.q5cib.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",{ useUnifiedTopology: true, useNewUrlParser: true });
@@ -19,18 +20,31 @@ moment.locale('ru')
 async function app(){
 
     
-    let ticker1 = 'aapl'
-    const result = await yahooFinance.default.quoteSummary(ticker1, { modules: [ "earningsHistory" ] },{ validateResult: false });
+    let ticker1 = 'GAZP.ME'
+    const result = await yahooFinance.quoteSummary(ticker1, { modules: [ "upgradeDowngradeHistory" ] });
 
-    const arr = {
-        epsActual:result.earningsHistory.history[3].epsActual,
-        epsEstimate:result.earningsHistory.history[3].epsEstimate,
-        surprisePercent:result.earningsHistory.history[3].surprisePercent,
+    function getGrade(result){
+        let arr=[]
+    
+        if (result.upgradeDowngradeHistory.history){
+    
+            for( let i of result.upgradeDowngradeHistory.history ){
+                arr.push({
+                    date: moment(i.epochGradeDate).locale("ru").format("L"),
+                    toGrade: i.toGrade,
+                    firm: i.firm,
+                    text: false,
+                })
+                if(arr.length == 5) break
+            }
+        }
+    
+        return arr
     }
-    
 
-    console.log(arr)
-    
+    console.log(getGrade(result))
+
+
 }
 
 app()
