@@ -4,11 +4,16 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
 const errorHandler = require('errorhandler');
+
+const history = require('connect-history-api-fallback');
+
 require('dotenv').config();
 
 
 //Initiate our app
 const app = express();
+
+app.use(history());
 
 // app.use(require('morgan')('dev'));
 
