@@ -20,29 +20,18 @@ const tipranksApi = require('tipranks-api-v2');
 async function app(){
 
     
-    let ticker1 = 'GAZP.ME'
-    const result = await yahooFinance.quoteSummary(ticker1, { modules: [ "upgradeDowngradeHistory" ] });
-
-    function getGrade(result){
-        let arr=[]
-    
-        if (result.upgradeDowngradeHistory.history){
-    
-            for( let i of result.upgradeDowngradeHistory.history ){
-                arr.push({
-                    date: moment(i.epochGradeDate).locale("ru").format("L"),
-                    toGrade: i.toGrade,
-                    firm: i.firm,
-                    text: false,
-                })
-                if(arr.length == 5) break
-            }
+    let ticker1 = 't'
+    const result = await yahooFinance.quoteSummary(ticker1, { modules: [ "recommendationTrend" ] });
+    function getRecommendation(recommendationTrend){
+        let a = recommendationTrend.recommendationTrend.trend[0]
+        if (a.strongBuy + a.buy + a.hold > a.sell + a.strongSell){
+            return 'Покупать'
+        }else{
+            return 'Продавать'
         }
-    
-        return arr
     }
 
-    console.log(getGrade(result))
+    console.log(getRecommendation(result))
 
 
 }

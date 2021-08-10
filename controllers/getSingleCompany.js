@@ -32,6 +32,7 @@ module.exports = async function singleCompany( req, res ){
 			recommendationTrend: recommendationTrend(price.recommendationTrend),
 			profitPercentage: price.profitPercentage,
 			recommendationPrice: price.recommendationPrice,
+			recommendation: price.recommendation,
 			//otherFactors: price.otherFactors,
 			analystsGrade:price.analystsGrade,
 			stocks: price.stocks
@@ -47,7 +48,7 @@ module.exports = async function singleCompany( req, res ){
 
 function recommendationTrend(recommendationTrend){
 
-	let result = [[],[],[]]
+	let result = [[],[],[],[]]
 
 	for (let mon of recommendationTrend){
 		result[0].push(
@@ -64,10 +65,18 @@ function recommendationTrend(recommendationTrend){
 			mon.sell,
 		)
 	}
+	for (let mon of recommendationTrend){
+		result[3].push(
+			mon.strongBuy,
+		)
+	}
+
 
 	result[0]=result[0].reverse()
 	result[1]=result[1].reverse()
 	result[2]=result[2].reverse()
+	result[3]=result[3].reverse()
+
 
 
 	return result

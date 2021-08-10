@@ -48,6 +48,7 @@ module.exports = async function allStocks( req, res ){
             res.profitPercentage = allCompany.profitPercentage
             res.recommendationPrice = allCompany.recommendationPrice
             res.currentPrice = allCompany.currentPrice
+            res.recommendation = allCompany.recommendation
             
             return res
         })

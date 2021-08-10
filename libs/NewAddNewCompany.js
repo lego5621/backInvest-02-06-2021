@@ -48,14 +48,8 @@ module.exports = async function app(z){
 	const price = await yahooFinance.default.historical(z.ticker, queryOptions);
 	const quote1 = await yahooFinance.default.quote(z.ticker);
 
-	const statement = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend', 'assetProfile', 'earningsHistory','upgradeDowngradeHistory', 'financialData', 'summaryDetail'] },{ validateResult: false });
+	const statement = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "earnings", 'balanceSheetHistory', 'cashflowStatementHistory', 'earningsTrend', 'assetProfile', 'earningsHistory','upgradeDowngradeHistory', 'financialData', 'summaryDetail', 'recommendationTrend'] },{ validateResult: false });
 	const quote = await yahooFinance.default.quote(z.ticker, { fields: [ "marketCap", "regularMarketPrice", "priceToBook", "epsCurrentYear", "forwardPE" ]});
-
-	// const queryOptionsInsights = { lang: 'en-US', reportsCount: 2, region: 'US' };
-	// const insights = await yahooFinance.default.insights(z.ticker, queryOptionsInsights,{ validateResult: false });
-
-	const recommendationTrend = await yahooFinance.default.quoteSummary(z.ticker, { modules: [  "recommendationTrend", ] });
-
 
 	
 	let nameCompany= quote1.displayName;
@@ -92,9 +86,10 @@ module.exports = async function app(z){
 		country: statement.assetProfile.country,
 		sector: statement.assetProfile.sector,
 		ticker: z.ticker.toLowerCase(),
+		recommendation: getRecommendation(statement),
 		currentPrice: setPrice(price)[setPrice(price).length-1].adjClose,
 		recommendationPrice: setPrice(price)[setPrice(price).length-1].adjTargetPrice,
-		recommendationTrend: getRecommendationTrend(recommendationTrend),
+		recommendationTrend: getRecommendationTrend(statement),
 		profitPercentage: (recommendationPrice - currentPrice)/recommendationPrice * 100,
 
 		statementAll: getStatement(statement),
@@ -350,4 +345,17 @@ function getstocks(result){
     }
 
 	return arr
+}
+
+
+
+function getRecommendation(recommendationTrend){
+	let a = recommendationTrend.recommendationTrend.trend[0]
+	if (a.strongBuy + a.buy > a.hold && a.strongBuy + a.buy > a.sell + a.strongSell){
+		return 'Покупать'
+	}else if (a.strongBuy + a.buy < a.hold && a.sell + a.strongSell < a.hold){
+		return 'Держать'
+	}else{
+		return 'Продавать'
+	}
 }

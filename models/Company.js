@@ -9,6 +9,7 @@ const CompanyScheme = new Schema({
 	sector: String,
 	ticker: String,
 	avatar: String,
+	recommendation: String,
 	recommendationPrice: Number,
 	profitPercentage: Number,
 	currentPrice: Number,

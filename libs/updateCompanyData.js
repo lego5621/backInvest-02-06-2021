@@ -3,6 +3,8 @@ require('../models/Company');
 const Company = mongoose.model('Company');
 const yahooFinance = require('yahoo-finance2');
 const moment = require('moment');
+const translatte = require('translatte');
+
 
 mongoose.promise = global.Promise;
 
@@ -23,7 +25,8 @@ async function app(){
 
 		let company = await Company.findOne({ ticker:i.ticker }, function(err){
 			if(err) return console.log(err);
-		});
+		});const translatte = require('translatte');
+
 		const queryOptions = { period1: d };
 	
 		let price = await yahooFinance.default.historical(i.ticker, queryOptions);
@@ -36,12 +39,12 @@ async function app(){
 		company.historicalPrice.push({
 			date: price[0].date,
 			adjClose: price[0].adjClose,
-			adjTargetPrice: statement.financialData.targetMedianPrice
+			adjTargetPrice: statement.financialData.targetMeanPrice
 		})
 
-		company.recommendationPrice = statement.financialData.targetMedianPrice		
+		company.recommendationPrice = statement.financialData.targetMeanPrice		
 		company.currentPrice = quote.regularMarketPrice;
-		company.profitPercentage = Math.floor((statement.financialData.targetMedianPrice - price[0].adjClose)/statement.financialData.targetMedianPrice * 100);
+		company.profitPercentage = Math.floor((statement.financialData.targetMeanPrice - price[0].adjClose)/statement.financialData.targetMeanPrice * 100);
 
 		company.statementAll = getStatement(statement)
 		company.statementPrognosis = getStatementPrognosis( quote , statement )
@@ -49,6 +52,17 @@ async function app(){
 		company.analystsGrade= getGrade(statement)
 		company.dividendsPaid = await getDividendYear( company.ticker )
 		company.debtRatio = getDebtRatio(statement)
+		company.recommendation = getRecommendation(statement)
+
+		if(company.fullDescription ==''){
+			await translatte(statement.assetProfile.longBusinessSummary, {to: 'ru'}).then(res => {
+				return company.fullDescription=res.text
+			}).catch(err => {
+				console.log(`${nameCompany} перевод не добавлен`)
+			});
+		}
+
+
 
 
 
@@ -77,9 +91,10 @@ function getRecommendationTrend(recommendationTrend){
 		result.push(
 			{
 				period: i.period,
-				buy : i.strongBuy + i.buy,
+				strongBuy : i.strongBuy ,
+				buy : i.buy ,
 				hold : i.hold,
-				sell : i.sell + i.strongSell
+				sell : i.sell + i.strongSell,
 			}
 		)
 	}
@@ -211,8 +226,19 @@ function getGrade(result){
 			firm: i.firm,
 			text: false,
 		})
-		if(arr.length == 5) break
+		if(arr.length == 20) break
 	}
 
 	return arr
+}
+
+function getRecommendation(recommendationTrend){
+	let a = recommendationTrend.recommendationTrend.trend[0]
+	if (a.strongBuy + a.buy > a.hold && a.strongBuy + a.buy > a.sell + a.strongSell){
+		return 'Покупать'
+	}else if (a.strongBuy + a.buy < a.hold && a.sell + a.strongSell < a.hold){
+		return 'Держать'
+	}else{
+		return 'Продавать'
+	}
 }
