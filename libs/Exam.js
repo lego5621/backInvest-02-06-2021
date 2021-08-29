@@ -21,17 +21,9 @@ async function app(){
 
     
     let ticker1 = 't'
-    const result = await yahooFinance.quoteSummary(ticker1, { modules: [ "recommendationTrend" ] });
-    function getRecommendation(recommendationTrend){
-        let a = recommendationTrend.recommendationTrend.trend[0]
-        if (a.strongBuy + a.buy + a.hold > a.sell + a.strongSell){
-            return 'Покупать'
-        }else{
-            return 'Продавать'
-        }
-    }
+    const result = await yahooFinance.quoteSummary(ticker1, { modules: [ "summaryDetail" ] },{ validateResult: false });
 
-    console.log(getRecommendation(result))
+    console.dir(result, {'maxArrayLength': null})
 
 
 }

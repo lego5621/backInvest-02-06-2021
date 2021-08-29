@@ -53,6 +53,10 @@ async function app(){
 		company.dividendsPaid = await getDividendYear( company.ticker )
 		company.debtRatio = getDebtRatio(statement)
 		company.recommendation = getRecommendation(statement)
+		company.minRecommendation = statement.financialData.targetLowPrice
+		company.maxRecommendation = statement.financialData.targetHighPrice
+		company.website = statement.assetProfile.website
+		company.recommendationAnalCaunt = getRecommendationCaunt(statement)
 
 		if(company.fullDescription ==''){
 			await translatte(statement.assetProfile.longBusinessSummary, {to: 'ru'}).then(res => {
@@ -236,9 +240,14 @@ function getRecommendation(recommendationTrend){
 	let a = recommendationTrend.recommendationTrend.trend[0]
 	if (a.strongBuy + a.buy > a.hold && a.strongBuy + a.buy > a.sell + a.strongSell){
 		return 'Покупать'
-	}else if (a.strongBuy + a.buy < a.hold && a.sell + a.strongSell < a.hold){
+	}else if (a.strongBuy + a.buy <= a.hold && a.sell + a.strongSell <= a.hold){
 		return 'Держать'
 	}else{
 		return 'Продавать'
 	}
+}
+
+function getRecommendationCaunt(recommendationTrend){
+	let a = recommendationTrend.recommendationTrend.trend[0]
+	return  a.buy + a.hold + a.strongBuy + a.buy + a.sell + a.strongSell
 }

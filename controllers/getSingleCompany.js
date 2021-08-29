@@ -35,7 +35,11 @@ module.exports = async function singleCompany( req, res ){
 			recommendation: price.recommendation,
 			//otherFactors: price.otherFactors,
 			analystsGrade:price.analystsGrade,
-			stocks: price.stocks
+			stocks: price.stocks,
+			minRecommendation: price.minRecommendation ,
+			maxRecommendation: price.maxRecommendation ,
+			website: price.website ,
+			recommendationAnalCaunt: price.recommendationAnalCaunt ,
 		});
 	} catch(err) {
 		res.status(404).json({
