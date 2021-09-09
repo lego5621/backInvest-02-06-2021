@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Company = mongoose.model('Company');
+const Idea = mongoose.model('Idea');
 const yahooFinance = require('yahoo-finance2');
 
 module.exports = async function singleCompany( req, res ){
@@ -11,6 +12,8 @@ module.exports = async function singleCompany( req, res ){
 		let price = await Company.findOne({ ticker:ticker, showCompany: true }, function(err){
 			if(err) return console.log(err);
 		});
+
+		let idea = await Idea.find({ ticker: ticker }).exec();
 
 
 		res.json({
@@ -40,6 +43,7 @@ module.exports = async function singleCompany( req, res ){
 			maxRecommendation: price.maxRecommendation ,
 			website: price.website ,
 			recommendationAnalCaunt: price.recommendationAnalCaunt ,
+			idea:idea
 		});
 	} catch(err) {
 		res.status(404).json({

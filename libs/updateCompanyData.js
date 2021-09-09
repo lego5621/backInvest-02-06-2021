@@ -14,7 +14,7 @@ mongoose.connect("mongodb+srv://Oleg:zcxvcbvn123456@cluster0.q5cib.mongodb.net/m
 // const { MongoClient } = pkg;
 
 async function app(){
-	let allCompany = await Company.find()
+	let allCompany = await Company.find({ showCompany: true })
 	let d =  new Date(Date.now()-86400000)	
 
 	d= d.toJSON().split("T")[0]
@@ -39,12 +39,13 @@ async function app(){
 		company.historicalPrice.push({
 			date: price[0].date,
 			adjClose: price[0].adjClose,
-			adjTargetPrice: statement.financialData.targetMeanPrice
+			adjTargetPrice: statement.financialData.targetMeanPrice ? statement.financialData.targetMeanPrice : price[0].adjClose
 		})
 
-		company.recommendationPrice = statement.financialData.targetMeanPrice		
+		company.recommendationPrice = statement.financialData.targetMeanPrice || quote.regularMarketPrice;
 		company.currentPrice = quote.regularMarketPrice;
-		company.profitPercentage = Math.floor((statement.financialData.targetMeanPrice - price[0].adjClose)/statement.financialData.targetMeanPrice * 100);
+
+		company.profitPercentage = Math.floor((statement.financialData.targetMeanPrice - price[0].adjClose)/statement.financialData.targetMeanPrice * 100) || 0;
 
 		company.statementAll = getStatement(statement)
 		company.statementPrognosis = getStatementPrognosis( quote , statement )
@@ -66,12 +67,6 @@ async function app(){
 			});
 		}
 
-
-
-
-
-
-
 		// console.dir(company, {'maxArrayLength': null});
 		//company.overallRisk = recommendationTrend.assetProfile.overallRisk
 
@@ -79,7 +74,7 @@ async function app(){
 		company.save(function(err){
 			// mongoose.disconnect(); 
 			if(err) return console.log(err);
-			console.log("Сохранен объект");
+			console.log(`Обновлена ${company.ticker}`);
 		});
 	})
 }

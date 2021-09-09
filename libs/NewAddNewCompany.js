@@ -99,9 +99,9 @@ module.exports = async function app(z){
 		statementPrognosis: statementPrognosisG,
 		stocks: getstocks(statement),
 		analystsGrade: getGrade(statement),
-		minRecommendation = statement.financialData.targetLowPrice,
-		maxRecommendation = statement.financialData.targetHighPrice,
-		website = statement.assetProfile.website,
+		minRecommendation : statement.financialData.targetLowPrice ,
+		maxRecommendation : statement.financialData.targetHighPrice ,
+		website : statement.assetProfile.website,
 
 		showCompany: statementPrognosisG[0].earnings==0 ? false : true,
 

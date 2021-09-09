@@ -3,5 +3,5 @@ mongoose.promise = global.Promise;
 
 
 mongoose.connect(process.env.DB_URL ,{ useUnifiedTopology: true, useNewUrlParser: true });
-// mongoose.set('debug', 1);
+mongoose.set('debug', 1);
 

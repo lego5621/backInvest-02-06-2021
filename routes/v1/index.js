@@ -10,16 +10,18 @@ const search = require('../../controllers/search');
 
 
 
-
-
 router.post('/regist', auth.optional, registration);
+
 
 router.post('/login', auth.optional, login);
 
-router.get('/company', auth.required, getAllCompany);
+router.get('/company', auth.optional, getAllCompany);
+// router.get('/company', auth.required, getAllCompany);
 
-router.get('/company/:query', auth.required, getSingleCompany);
+
+router.get('/company/:query', auth.optional, getSingleCompany);
 
 router.get('/search', auth.optional, search);
+
 
 module.exports = router;

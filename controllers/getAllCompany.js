@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const Company = mongoose.model('Company');
+const Idea = mongoose.model('Idea');
+
 
 module.exports = async function allStocks( req, res ){
     let { page = 1, limit = 5, filter = ''} = req.query;
@@ -32,6 +34,8 @@ module.exports = async function allStocks( req, res ){
             return 
         }
 
+        let allIdea = await Idea.find({ }).exec();
+
 
         const company = allCompany.map(function(allCompany) {
             let res ={}
@@ -49,6 +53,7 @@ module.exports = async function allStocks( req, res ){
             res.recommendationPrice = allCompany.recommendationPrice
             res.currentPrice = allCompany.currentPrice
             res.recommendation = allCompany.recommendation
+            res.idea = allIdea.filter(item => item.ticker == allCompany.ticker)
             
             return res
         })
@@ -68,4 +73,3 @@ module.exports = async function allStocks( req, res ){
         })
     }
 }
-
