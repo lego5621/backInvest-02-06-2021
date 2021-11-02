@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const auth = require('../../config/expressJwt');
+// const auth = require('../../config/expressJwt');
 
 const login = require('../../controllers/login');
 const registration = require('../../controllers/registration');
@@ -10,18 +10,18 @@ const search = require('../../controllers/search');
 
 
 
-router.post('/regist', auth.optional, registration);
+router.post('/regist', registration);
 
 
-router.post('/login', auth.optional, login);
+router.post('/login', login);
 
-router.get('/company', auth.optional, getAllCompany);
+router.get('/company', getAllCompany);
 // router.get('/company', auth.required, getAllCompany);
 
 
-router.get('/company/:query', auth.optional, getSingleCompany);
+router.get('/company/:query', getSingleCompany);
 
-router.get('/search', auth.optional, search);
+router.get('/search', search);
 
 
 module.exports = router;

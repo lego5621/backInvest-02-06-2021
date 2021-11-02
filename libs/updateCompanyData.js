@@ -25,7 +25,7 @@ async function app(){
 
 		let company = await Company.findOne({ ticker:i.ticker }, function(err){
 			if(err) return console.log(err);
-		});const translatte = require('translatte');
+		});
 
 		const queryOptions = { period1: d };
 	
