@@ -25,9 +25,9 @@ for(let page of arrUrl){
       let a = JSON.parse(html)
       for(let i of a.data.ideas){
         if(i.date_exp !== ''){continue}
-        if(i.ticker.ticker_ticker.includes('.')){continue}
+        if(i.tickers[0].ticker_ticker.includes('.')){continue}
         let a= {
-          ticker: i.ticker.ticker_ticker.toLowerCase(),
+          ticker: i.tickers[0].ticker_ticker.toLowerCase(),
           name : i.broker.name,
           logo: `https://invest-idei.ru${i.broker.logo}`,
           url: i.full_url,
