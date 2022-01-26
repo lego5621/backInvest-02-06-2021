@@ -2,6 +2,7 @@
 node_modules
 /dist
 .npm
+/dist_front
 
 
 # local env files
