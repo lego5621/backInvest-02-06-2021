@@ -1,18 +1,22 @@
+# backend часть проекта StockAdvisor
 
-### Installing packages
+Сайт писался для себя, постоянно появлялись новые идеи, никакого code style-а нет от слова совсем )
+
+![Alt text](https://i.ibb.co/93hyXjB/Screenshot-from-2022-01-26-10-50-13.png "Главная StockAdvisor")
+
+На сайте наглядно показываются консенсус прогнозы по акциям, история изменения прогнозируемой цены, прогнозы по прибыли и выручке компании на 2 года, история дивидендов компании, инвестиционные идеи от брокеров, оценки крупных инвестиционных фондов.
+
 
 Фрон сборка должна лежать в папке dist_front
 
-Install packages
 
+## Project setup
 ```
-npm i
+npm install
 ```
 
-### Running the app
-
-To run the app (dev. mode)
-
+### Compiles and hot-reloads for development
 ```
-npm start
+npm run serve
 ```
+
