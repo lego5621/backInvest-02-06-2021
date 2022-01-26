@@ -1,6 +1,8 @@
 
 ### Installing packages
 
+Фрон сборка должна лежать в папке dist_front
+
 Install packages
 
 ```
