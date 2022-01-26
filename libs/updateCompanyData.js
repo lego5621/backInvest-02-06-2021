@@ -4,19 +4,17 @@ const Company = mongoose.model("Company");
 const yahooFinance = require("yahoo-finance2");
 const moment = require("moment");
 const translatte = require("translatte");
+require("dotenv").config();
 
 mongoose.promise = global.Promise;
 
-mongoose.connect(
-	"mongodb+srv://Oleg:zcxvcbvn123456@cluster0.q5cib.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-	{ useUnifiedTopology: true, useNewUrlParser: true }
-);
-
-// import pkg from 'mongodb';
-// const { MongoClient } = pkg;
+mongoose.connect(process.env.DB_URL, {
+	useUnifiedTopology: true,
+	useNewUrlParser: true,
+});
 
 async function app() {
-	let allCompany = await Company.find({ showCompany: true  });
+	let allCompany = await Company.find({ showCompany: true });
 	let d = new Date(Date.now() - 86400000);
 
 	d = d.toJSON().split("T")[0];

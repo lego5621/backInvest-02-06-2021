@@ -22,7 +22,6 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "tipranks-api-v2": "^1.0.5",
     "translate-api": "^0.3.18",
     "translatte": "^3.0.1",
     "yahoo-finance2": "^1.14.7"

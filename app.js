@@ -29,8 +29,6 @@ if(process.env.PRODUCTION) {
   app.use(errorHandler());
 }
 
-
-
 //Configure Mongoose
 require('./config/mongoose.js');
 
